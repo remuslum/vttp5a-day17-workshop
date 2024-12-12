@@ -1,5 +1,7 @@
 package sg.nus.edu.iss.vttp5a_day17_workshop.service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,4 +15,9 @@ public class CurrencyConverterService {
     public String getConversionRate(String currFrom, String currTo){
         return currencyConverterRepo.getConversionRate(currFrom, currTo);
     }
+
+    public Map<String, String> getCountryCodeAndName(){
+        return currencyConverterRepo.getCountryCodeAndName();
+    }
+    
 }
