@@ -1,7 +1,5 @@
 package sg.nus.edu.iss.vttp5a_day17_workshop.repo;
 
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -12,11 +10,8 @@ public class CurrencyConverterRepo {
     @Autowired
     CurrencyConverter currencyConverter;
 
-    public String getConversionRate(String currFrom, String currTo){
-        return currencyConverter.getConversionRate(currFrom, currTo);
+    public Double calculateConversion(String countryNameFrom, String countryNameTo, String amount){
+        return currencyConverter.calculateConversion(countryNameFrom, countryNameTo, amount);
     }
 
-    public Map<String, String> getCountryCodeAndName(){
-        return currencyConverter.getCountryCodeAndName();
-    }
 }

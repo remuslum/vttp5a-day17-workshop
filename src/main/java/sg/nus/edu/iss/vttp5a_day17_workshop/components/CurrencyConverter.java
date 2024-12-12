@@ -20,11 +20,28 @@ public class CurrencyConverter {
     @Autowired
     JSONExtracter jsonExtracter;
 
-    public String getConversionRate(String currFrom, String currTo){
+    public Double calculateConversion(String countryNameFrom, String countryNameTo, String amount){
+        Map<String, String> countryCodeAndName = getCountryCodeAndName();
+        String currFrom = countryCodeAndName.get(countryNameFrom);
+        String currTo = countryCodeAndName.get(countryNameTo);
+
+        Double totalAmount = 0.0d;
+        String conversion = getConversionRate(currFrom, currTo);
+        JsonObject jsonObject = Json.createReader(new StringReader(conversion)).readObject();
+        Set<String> keys = jsonObject.keySet();
+
+        for(String key:keys){
+            totalAmount = Double.parseDouble(amount) * jsonObject.getJsonNumber(key).doubleValue();
+        }
+
+        return totalAmount;
+    }
+
+    private String getConversionRate(String currFrom, String currTo){
         return urlCreator.getConversionRateFromUrl(MyConstants.CONVERTURL, currFrom, currTo).getBody();
     }
 
-    public Map<String, String> getCountryCodeAndName(){
+    private Map<String, String> getCountryCodeAndName(){
         Map<String, String> countryCodeAndName = new HashMap<>();
         JsonObject jsonObject = Json.createReader(new StringReader(urlCreator.getResponseEntityFromUrl(MyConstants.CURRENCYLISTURL).getBody())).readObject();
         JsonObject jsonObjectAllCurrencies = jsonObject.getJsonObject("results");
@@ -36,4 +53,6 @@ public class CurrencyConverter {
         }
         return countryCodeAndName;
     }
+
+    
 }
